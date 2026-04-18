@@ -6,6 +6,8 @@ import shutil
 import numpy as np
 from PIL import Image, ImageDraw
 
+SPLIT_SEED = int(os.environ.get("DENTEX_SPLIT_SEED", "42"))
+
 
 def mkdirs(path):
     if not os.path.exists(path):
@@ -22,6 +24,12 @@ def save_json(path, data):
         json.dump(data, f, indent=4)
 
 
+def shuffle_with_seed(items, seed_offset=0):
+    shuffled_items = list(items)
+    random.Random(SPLIT_SEED + seed_offset).shuffle(shuffled_items)
+    return shuffled_items
+
+
 def process_coco_quadrant():
     """
     split quadrant dataset into train and val,
@@ -31,7 +39,7 @@ def process_coco_quadrant():
     dataset_json = load_json("dentex_dataset/origin/quadrant/train_quadrant.json")
 
     image_ids = [x["id"] for x in dataset_json["images"]]
-    random.shuffle(image_ids)
+    image_ids = shuffle_with_seed(image_ids, seed_offset=1)
     train_ids = image_ids[: int(len(image_ids) * 0.8)]  # 80% for training
 
     train_json = {"images": [], "annotations": [], "categories": dataset_json["categories"]}
@@ -86,7 +94,7 @@ def process_coco_enumeration32():
         annotation["category_id"] = category_id_1 * 8 + category_id_2
 
     image_ids = [x["id"] for x in dataset_json["images"]]
-    random.shuffle(image_ids)
+    image_ids = shuffle_with_seed(image_ids, seed_offset=2)
     train_ids = image_ids[: int(len(image_ids) * 0.9)]  # 90% for training
 
     categories = [{"id": i, "name": str(i + 1), "supercategory": str(i + 1)} for i in range(32)]
@@ -145,7 +153,7 @@ def process_coco_disease():
         annotation["category_id"] = category_id_3
 
     image_ids = [x["id"] for x in dataset_json["images"]]
-    random.shuffle(image_ids)
+    image_ids = shuffle_with_seed(image_ids, seed_offset=3)
     train_ids = image_ids[: int(len(image_ids) * 0.8)]  # 80% for training
 
     categories = [

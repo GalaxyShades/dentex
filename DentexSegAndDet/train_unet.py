@@ -263,7 +263,7 @@ def main(args):
 
         # scheduler.step()
 
-        if epoch % 5 == args.save_interval:
+        if (epoch + 1) % args.save_interval == 0:
             utils.save_state(
                 model=model,
                 out_dir=output_dir,

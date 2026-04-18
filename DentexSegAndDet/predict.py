@@ -266,6 +266,7 @@ def main():
     cuda = True
     iou_match_threshold = 0.3
     container = False
+    max_test_slices_env = os.environ.get("DENTEX_TEST_MAX_SLICES", "")
 
     if container:
         input_image_dir = "/input/images/panoramic-dental-xrays"
@@ -329,21 +330,30 @@ def main():
     image_array = sitk.GetArrayFromImage(image)
 
     all_disease_instances = []
-    image_count = image_array.shape[2]
-    list_ids = list_ids_final if image_count == len(list_ids_final) else list_ids_pre
-    if image_count != len(list_ids):
-        raise ValueError(f"image count is {image_count}, which maybe not intended.")
-    image_type = "test" if image_count == len(list_ids_final) else "val"
+    full_image_count = image_array.shape[2]
+    if full_image_count == len(list_ids_final):
+        list_ids = list_ids_final
+        image_type = "test"
+    elif full_image_count == len(list_ids_pre):
+        list_ids = list_ids_pre
+        image_type = "val"
+    else:
+        raise ValueError(f"image count is {full_image_count}, which maybe not intended.")
+
+    image_count = full_image_count
+    if max_test_slices_env:
+        max_test_slices = int(max_test_slices_env)
+        if max_test_slices > 0:
+            image_count = min(image_count, max_test_slices)
+
+    selected_ids = list_ids[:image_count]
 
     print(f"task type: {image_type}")
-    for k in range(image_count):
-        image_name = f"{image_type}_{k}.png"
-
-        for input_img in list_ids:
-            if input_img["file_name"] == image_name:
-                image_id = input_img["id"]
-                image_height = input_img["height"]
-                image_width = input_img["width"]
+    for k, input_img in enumerate(selected_ids):
+        image_name = input_img["file_name"]
+        image_id = input_img["id"]
+        image_height = input_img["height"]
+        image_width = input_img["width"]
         print(f"processing {image_name}, id {image_id}...")
 
         image_rgb_arr = image_array[:, :, k, :]

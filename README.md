@@ -5,7 +5,7 @@ Local research workspace for DENTEX segmentation and detection workflows.
 ## Repository layout
 
 - `DentexSegAndDet/`: copied source code from `https://github.com/xyzlancehe/DentexSegAndDet`
-- `dentex_workflow.ipynb`: single notebook workflow with sections for preprocessing, augmentation, training, and testing
+- `seg_and_det.ipynb`: single notebook workflow with sections for preprocessing, augmentation, training, and testing
 
 ## Dataset
 
