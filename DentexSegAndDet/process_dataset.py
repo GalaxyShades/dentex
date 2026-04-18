@@ -30,12 +30,68 @@ def shuffle_with_seed(items, seed_offset=0):
     return shuffled_items
 
 
+def ensure_origin_source_files():
+    disease_json_path = "dentex_dataset/origin/quadrant_enumeration_disease/train_quadrant_enumeration_disease.json"
+    enumeration_json_path = "dentex_dataset/origin/quadrant_enumeration/train_quadrant_enumeration.json"
+    quadrant_json_path = "dentex_dataset/origin/quadrant/train_quadrant.json"
+
+    if not os.path.exists(disease_json_path):
+        return
+
+    disease_json = load_json(disease_json_path)
+    images = disease_json["images"]
+    disease_annotations = disease_json["annotations"]
+
+    if not os.path.exists(enumeration_json_path):
+        mkdirs(os.path.dirname(enumeration_json_path))
+        enumeration_annotations = []
+        for annotation in disease_annotations:
+            converted_annotation = dict(annotation)
+            converted_annotation.pop("category_id_3", None)
+            enumeration_annotations.append(converted_annotation)
+        save_json(
+            enumeration_json_path,
+            {
+                "images": images,
+                "annotations": enumeration_annotations,
+                "categories_1": disease_json.get("categories_1", []),
+                "categories_2": disease_json.get("categories_2", []),
+            },
+        )
+
+    if not os.path.exists(quadrant_json_path):
+        mkdirs(os.path.dirname(quadrant_json_path))
+        quadrant_annotations = []
+        for annotation in disease_annotations:
+            converted_annotation = dict(annotation)
+            converted_annotation["category_id"] = converted_annotation["category_id_1"]
+            converted_annotation.pop("category_id_1", None)
+            converted_annotation.pop("category_id_2", None)
+            converted_annotation.pop("category_id_3", None)
+            quadrant_annotations.append(converted_annotation)
+
+        quadrant_categories = disease_json.get("categories_1", [])
+        if not quadrant_categories:
+            category_ids = sorted({x["category_id"] for x in quadrant_annotations})
+            quadrant_categories = [{"id": x, "name": str(x), "supercategory": str(x)} for x in category_ids]
+
+        save_json(
+            quadrant_json_path,
+            {
+                "images": images,
+                "annotations": quadrant_annotations,
+                "categories": quadrant_categories,
+            },
+        )
+
+
 def process_coco_quadrant():
     """
     split quadrant dataset into train and val,
     copy data to coco directory
     """
 
+    ensure_origin_source_files()
     dataset_json = load_json("dentex_dataset/origin/quadrant/train_quadrant.json")
 
     image_ids = [x["id"] for x in dataset_json["images"]]
@@ -81,6 +137,7 @@ def process_coco_enumeration32():
     copy data to coco directory
     """
 
+    ensure_origin_source_files()
     dataset_json = load_json("dentex_dataset/origin/quadrant_enumeration/train_quadrant_enumeration.json")
 
     for annotation in dataset_json["annotations"]:
@@ -138,6 +195,7 @@ def process_coco_disease():
     copy data to coco directory
     """
 
+    ensure_origin_source_files()
     dataset_json = load_json(
         "dentex_dataset/origin/quadrant_enumeration_disease/train_quadrant_enumeration_disease.json"
     )
@@ -202,6 +260,7 @@ def process_coco_disease_all():
     copy data to coco directory
     """
 
+    ensure_origin_source_files()
     dataset_json = load_json(
         "dentex_dataset/origin/quadrant_enumeration_disease/train_quadrant_enumeration_disease.json"
     )
@@ -388,6 +447,7 @@ def process_seg_enumeration32():
     """
     draw segmentation masks for enumeration32
     """
+    ensure_origin_source_files()
     dataset_json = load_json("dentex_dataset/origin/quadrant_enumeration/train_quadrant_enumeration.json")
     mkdirs("dentex_dataset/segmentation/enumeration32/masks")
     mkdirs("dentex_dataset/segmentation/enumeration32/xrays")
