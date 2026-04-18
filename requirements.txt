@@ -1,0 +1,2 @@
+# Local development baseline.
+# Keep this lean to avoid unnecessary downloads on slow connections.

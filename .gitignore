@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+
+# Virtual environments
+.venv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Training outputs and artefacts
+outputs/
+checkpoints/
+logs/
+runs/
+*.pth
+*.pt
+*.pkl
+*.onnx
+
+# Local data and caches
+*.cache/
+cache/
+.huggingface/
+
+# OS/editor
+.DS_Store
+.vscode/
