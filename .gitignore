@@ -23,7 +23,14 @@ runs/
 *.cache/
 cache/
 .huggingface/
+data/dentex/**
+!data/dentex/README.md
+results/**
+!results/README.md
 
 # OS/editor
 .DS_Store
 .vscode/
+
+# Packaging
+*.egg-info/

@@ -1,5 +1,0 @@
-task,category_id,category_name,AP50
-diagnosis,0,Impacted,0.7967615367674873
-diagnosis,1,Caries,0.36659247911988224
-diagnosis,2,Periapical Lesion,0.506801714654224
-diagnosis,3,Deep Caries,0.4382319485233463

@@ -1,0 +1,5 @@
+-e .[dev]
+ipykernel
+nbclient
+nbconvert
+notebook

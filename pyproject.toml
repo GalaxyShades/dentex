@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dentex"
+version = "0.1.0"
+description = "Local DENTEX research pipelines"
+requires-python = ">=3.11"
+dependencies = [
+    "ultralytics==8.3.32",
+    "pandas>=2.2.2",
+    "pycocotools>=2.0.8",
+    "scipy>=1.14.1",
+    "matplotlib>=3.9.2",
+    "numpy",
+    "pillow",
+    "torch",
+    "torchvision",
+    "PyYAML",
+]
+
+[project.optional-dependencies]
+dev = ["black"]
+
+[project.scripts]
+dentex = "core.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["core*"]
+
+[tool.black]
+line-length = 88
+target-version = ["py311"]
