@@ -44,10 +44,10 @@ We conducted a multi-stage benchmarking process to establish a "Pareto Frontier"
 ## Explainable AI (XAI) & Clinical Trust
 To bridge the gap between "Black Box" algorithms and clinical practitioners, we integrated two distinct interpretability layers. These ensure that the model’s predictions are based on relevant dental morphology rather than image noise.
 
-# Clinical Activation Maps (Saliency)
+### Clinical Activation Maps (Saliency)
 We generated saliency heatmaps to visualize the model’s "Attention Zones." These maps translate complex neural activations into a color-coded gradient, allowing dentists to verify exactly which anatomical regions—such as the enamel-dentine junction—triggered a positive diagnosis.
 
-# C2PSA Feature Visualizations
+### C2PSA Feature Visualizations
 We performed a "digital autopsy" by extracting raw activations from the Programmable Sparse Attention (C2PSA) layer.
 
 - Spatial Awareness: Our analysis confirmed that the internal neurons fire specifically on high-contrast biomarkers, such as radiolucencies in the pulp chamber or root angulations.
