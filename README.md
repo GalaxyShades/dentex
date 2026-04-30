@@ -33,7 +33,26 @@ python -m venv .venv
 ```
 
 The same setup is available through `make init`. Existing environments can be refreshed with `make install`.
+## Benchmarking
+We conducted a multi-stage benchmarking process to establish a "Pareto Frontier" between diagnostic accuracy and real-time efficiency. Our research evaluated the YOLO11 architecture against legacy detectors and ultra-lightweight candidates to determine the optimal deployment configuration for clinical environments.
+| Model Architecture |mAP50 | Latency (ms) | BackboneR |
+|---|---:|---:|---:|
+| YOLO11n (Ours) | 0.497 | 10.9 | C3k2/C2PSA |
+| NanoDet-m	 | 0.305	 | 6.1 | ShuffleNetV2 |
+| Tiny SSD	 | 0.160	 | 18.4	 | VGG16-Lite |
 
+## Explainable AI (XAI) & Clinical Trust
+To bridge the gap between "Black Box" algorithms and clinical practitioners, we integrated two distinct interpretability layers. These ensure that the model’s predictions are based on relevant dental morphology rather than image noise.
+
+# Clinical Activation Maps (Saliency)
+We generated saliency heatmaps to visualize the model’s "Attention Zones." These maps translate complex neural activations into a color-coded gradient, allowing dentists to verify exactly which anatomical regions—such as the enamel-dentine junction—triggered a positive diagnosis.
+
+# C2PSA Feature Visualizations
+We performed a "digital autopsy" by extracting raw activations from the Programmable Sparse Attention (C2PSA) layer.
+
+- Spatial Awareness: Our analysis confirmed that the internal neurons fire specifically on high-contrast biomarkers, such as radiolucencies in the pulp chamber or root angulations.
+
+- Verification: By visualizing these feature maps, we verified the architectural integrity of our pipeline, proving that the model focuses on pathological density changes rather than artifacts in the X-ray film.
 ## Running Pipelines
 
 The main pipelines are:
