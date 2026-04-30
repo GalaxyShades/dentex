@@ -1,6 +1,4 @@
-# DENTEX Local Pipelines
-
-This repository has been refactored away from notebook-driven execution into local Python pipelines. Shared configuration, paths, experiment definitions, and command-line utilities now live under `core/`.
+# DENTEX
 
 ## Layout
 
