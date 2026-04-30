@@ -5,7 +5,7 @@ This repository has been refactored away from notebook-driven execution into loc
 ## Layout
 
 ```text
-data/dentex/        Local DENTEX dataset root
+data/dentex/       Local DENTEX dataset root
 models/            YOLO base weights and selected trained weights
 notebooks/         Exploratory notebooks and generated figures
 pipelines/         Python pipeline scripts converted from the notebooks
